@@ -5,6 +5,7 @@ poll - pull element out of the queue
 peek - get element on the top of the queue (just get, no pulling out)
 iterator - iterate over elements of the queue (no need to keep order)
 size - just amount of current queue elements*/
+import java.sql.Array;
 import java.util.*;
 
 
@@ -12,45 +13,55 @@ class MedianQueue extends AbstractQueue<Integer> {
 
 
     private Queue<Integer> medianQueue = new LinkedList<>();
-    private List<Integer> medianQueueSorted = new ArrayList<>();
+    int[] medianArr = new int[16];
 
     @Override
     public Integer poll() {
-        this.sortOrder();
-        return medianQueue.poll();
+        Integer result = this.peek();
+        medianQueue.remove(result);
+        return result;
+    }
+
+    public Integer sortAndDelete() {
+
+        Integer result = this.sortOrder();
+        medianQueue.remove(result);
+        return result;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return medianQueue.remove(o);
     }
 
     @Override
     public Integer peek() {
-        this.sortOrder();
-        return medianQueue.peek();
-    }
-
-    public void sortOrder() {
-
-        Collections.sort((List) medianQueue);
-        int arr[] = new int[medianQueue.size()];
+        medianArr = new int[16];
         int i = 0;
-        for (Integer num : medianQueue) {
-            arr[i] = num;
-            i++;
+        for(Integer num : medianQueue) {
+            medianArr[i++] = num;
         }
-        int n = arr.length;
-        Integer result = Median.findMedian(arr, n);
-        ArrayList<Integer> list = new ArrayList<>();
-        list.add(result);
-        Queue<Integer> q = new PriorityQueue<>(Comparator.reverseOrder());
-        q.addAll(medianQueue);
-        list.addAll(q);
-        for (Integer num : list) {
-            medianQueue.add(num);
-        }
+            return Median.findMedian(medianArr, medianQueue.size());
+
     }
-    @Override
-    public boolean remove(Object o) {
-         medianQueue.remove(o);
-         return true;
+
+    public Integer sortOrder() {
+
+if (medianQueue.size()>2) {
+    int arr[] = new int[medianQueue.size()];
+    int i = 0;
+    for (Integer num : medianQueue) {
+        arr[i] = num;
+        i++;
     }
+    int n = arr.length;
+    Integer result = Median.findMedian(arr, n);
+    return result;
+}
+ Collections.sort((LinkedList<Integer>)medianQueue);
+return medianQueue.peek();
+    }
+
 
     @Override
     public Iterator<Integer> iterator() {
