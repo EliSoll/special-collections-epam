@@ -80,7 +80,7 @@ public class Tests {
 
     @Test
     public void testSortedByAbsoluteValueIntegerSet() {
-        Set<Integer> set = new SortedByAbsoluteValueIntegerSet();
+        Set<Integer> set = (Set<Integer>) new SortedByAbsoluteValueIntegerSet();
 
         assertEquals(0, set.size());
 
@@ -121,7 +121,7 @@ public class Tests {
     }
 
     private void testCaseMQ(final int expectedMedian, final String expectedQueue, final Integer... elements) {
-        Queue<Integer> queue = new MedianQueue();
+        Queue<Integer> queue = (Queue<Integer>) new MedianQueue();
         assertEquals(0, queue.size());
 
         stream(elements).forEach(queue::offer);
