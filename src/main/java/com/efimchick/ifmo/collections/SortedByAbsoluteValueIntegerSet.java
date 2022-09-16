@@ -26,6 +26,8 @@ class SortedByAbsoluteValueIntegerSet extends LinkedHashSet<Integer> {
         set.addAll(list);
         return set;
     }
+
+
     @Override
     public boolean add(Integer integer) {
         if(integer != null) {
